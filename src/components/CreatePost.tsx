@@ -8,7 +8,7 @@ import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
 import { ImageIcon, Loader2Icon, SendIcon } from "lucide-react";
 import { createPost } from "@/actions/post.action";
-
+import { toast } from "react-hot-toast";
 function CreatePost() {
   const { user } = useUser();
 
@@ -28,8 +28,10 @@ function CreatePost() {
         setImageURL("");
         setShowImageUpload(false);
       }
+      toast.success("Post created successfully");
     } catch (error: any) {
-      console.log("Error in handleSubmit", error);
+      console.error("Error in handleSubmit:", error);
+      toast.error("Error creating post");
     } finally {
       setIsPosting(false);
     }
