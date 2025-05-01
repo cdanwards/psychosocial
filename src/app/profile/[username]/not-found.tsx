@@ -30,13 +30,6 @@ export default function NotFound() {
                   Back to Home
                 </Link>
               </Button>
-
-              <Button variant="outline" asChild>
-                <Link href="/">
-                  <ArrowLeftIcon className="mr-2 size-4" />
-                  Home
-                </Link>
-              </Button>
             </div>
           </div>
         </CardContent>
