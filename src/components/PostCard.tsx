@@ -22,9 +22,29 @@ import {
   SendIcon,
 } from "lucide-react";
 import { Textarea } from "./ui/textarea";
+import { MaskedAvatar } from "./MaskedAvatar";
 
 type Posts = Awaited<ReturnType<typeof getPosts>>;
 type Post = Posts[number];
+
+// Add these interfaces
+interface Like {
+  userId: string;
+}
+
+interface CommentAuthor {
+  id: string;
+  name: string;
+  username: string;
+  image: string | null;
+}
+
+interface Comment {
+  id: string;
+  content: string;
+  createdAt: string;
+  author: CommentAuthor;
+}
 
 function PostCard({ post, dbUserId }: { post: Post; dbUserId: string | null }) {
   const { user } = useUser();
@@ -33,7 +53,7 @@ function PostCard({ post, dbUserId }: { post: Post; dbUserId: string | null }) {
   const [isLiking, setIsLiking] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [hasLiked, setHasLiked] = useState(
-    post.likes.some((like) => like.userId === dbUserId)
+    post.likes.some((like: Like) => like.userId === dbUserId)
   );
   const [optimisticLikes, setOptmisticLikes] = useState(post._count.likes);
   const [showComments, setShowComments] = useState(false);
@@ -42,12 +62,12 @@ function PostCard({ post, dbUserId }: { post: Post; dbUserId: string | null }) {
     if (isLiking) return;
     try {
       setIsLiking(true);
-      setHasLiked((prev) => !prev);
-      setOptmisticLikes((prev) => prev + (hasLiked ? -1 : 1));
+      setHasLiked((prev: boolean) => !prev);
+      setOptmisticLikes((prev: number) => prev + (hasLiked ? -1 : 1));
       await toggleLike(post.id);
     } catch (error) {
       setOptmisticLikes(post._count.likes);
-      setHasLiked(post.likes.some((like) => like.userId === dbUserId));
+      setHasLiked(post.likes.some((like: Like) => like.userId === dbUserId));
     } finally {
       setIsLiking(false);
     }
@@ -89,9 +109,11 @@ function PostCard({ post, dbUserId }: { post: Post; dbUserId: string | null }) {
         <div className="space-y-4">
           <div className="flex space-x-3 sm:space-x-4">
             <Link href={`/profile/${post.author.username}`}>
-              <Avatar className="size-8 sm:w-10 sm:h-10">
-                <AvatarImage src={post.author.image ?? "/avatar.png"} />
-              </Avatar>
+              <MaskedAvatar
+                src={post.author.image ?? "/avatar.png"}
+                size={40}
+                className="size-8 sm:w-10 sm:h-10"
+              />
             </Link>
 
             {/* POST HEADER & TEXT CONTENT */}
@@ -192,13 +214,13 @@ function PostCard({ post, dbUserId }: { post: Post; dbUserId: string | null }) {
             <div className="space-y-4 pt-4 border-t">
               <div className="space-y-4">
                 {/* DISPLAY COMMENTS */}
-                {post.comments.map((comment) => (
+                {post.comments.map((comment: Comment) => (
                   <div key={comment.id} className="flex space-x-3">
-                    <Avatar className="size-8 flex-shrink-0">
-                      <AvatarImage
-                        src={comment.author.image ?? "/avatar.png"}
-                      />
-                    </Avatar>
+                    <MaskedAvatar
+                      src={comment.author.image ?? "/avatar.png"}
+                      size={32}
+                      className="size-8 flex-shrink-0"
+                    />
                     <div className="flex-1 min-w-0">
                       <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
                         <span className="font-medium text-sm">
@@ -220,9 +242,11 @@ function PostCard({ post, dbUserId }: { post: Post; dbUserId: string | null }) {
 
               {user ? (
                 <div className="flex space-x-3">
-                  <Avatar className="size-8 flex-shrink-0">
-                    <AvatarImage src={user?.imageUrl || "/avatar.png"} />
-                  </Avatar>
+                  <MaskedAvatar
+                    src={user?.imageUrl || "/avatar.png"}
+                    size={32}
+                    className="size-8 flex-shrink-0"
+                  />
                   <div className="flex-1">
                     <Textarea
                       placeholder="Write a comment..."

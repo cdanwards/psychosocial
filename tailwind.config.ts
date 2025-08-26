@@ -2,7 +2,7 @@ import type { Config } from "tailwindcss";
 import { withUt } from "uploadthing/tw";
 
 const config: Config = withUt({
-  darkMode: ["class"],
+  darkMode: "media",
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -11,54 +11,118 @@ const config: Config = withUt({
   theme: {
     extend: {
       colors: {
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
+        background: "var(--bg-primary)",
+        foreground: "var(--text-light)",
         card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
+          DEFAULT: "var(--bg-secondary)",
+          foreground: "var(--text-light)",
         },
         popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
+          DEFAULT: "var(--bg-secondary)",
+          foreground: "var(--text-light)",
         },
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+          DEFAULT: "var(--accent-red)",
+          foreground: "var(--text-light)",
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
+          DEFAULT: "var(--bg-secondary)",
+          foreground: "var(--text-light)",
         },
         muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
+          DEFAULT: "var(--bg-secondary)",
+          foreground: "var(--text-light)",
         },
         accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
+          DEFAULT: "var(--accent-red)",
+          foreground: "var(--text-light)",
         },
         destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
+          DEFAULT: "var(--accent-red)",
+          foreground: "var(--text-light)",
         },
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        chart: {
-          "1": "hsl(var(--chart-1))",
-          "2": "hsl(var(--chart-2))",
-          "3": "hsl(var(--chart-3))",
-          "4": "hsl(var(--chart-4))",
-          "5": "hsl(var(--chart-5))",
+        border: "var(--accent-red)",
+        input: "var(--bg-secondary)",
+        ring: "var(--accent-red)",
+      },
+      fontFamily: {
+        stencil: [
+          '"Special Elite"',
+          '"Rubik Mono One"',
+          "system-ui",
+          "sans-serif",
+        ],
+        industrial: [
+          '"Special Elite"',
+          '"Rubik Mono One"',
+          "system-ui",
+          "sans-serif",
+        ],
+        condensed: ['"Roboto Condensed"', "system-ui", "sans-serif"],
+      },
+      keyframes: {
+        glitch: {
+          "0%, 100%": { transform: "translate(0)" },
+          "20%": { transform: "translate(-2px, 2px)" },
+          "40%": { transform: "translate(-2px, -2px)" },
+          "60%": { transform: "translate(2px, 2px)" },
+          "80%": { transform: "translate(2px, -2px)" },
+        },
+        "glitch-subtle": {
+          "0%, 100%": { transform: "translate(0)" },
+          "20%": { transform: "translate(-1px, 1px)" },
+          "40%": { transform: "translate(-1px, -1px)" },
+          "60%": { transform: "translate(1px, 1px)" },
+          "80%": { transform: "translate(1px, -1px)" },
+        },
+        shake: {
+          "0%, 100%": { transform: "translate(0)" },
+          "25%": { transform: "translate(-2px)" },
+          "75%": { transform: "translate(2px)" },
+        },
+        flicker: {
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: "0.8" },
         },
       },
-      borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+      animation: {
+        glitch: "glitch 0.2s ease-in-out",
+        "glitch-subtle": "glitch-subtle 0.3s ease-in-out",
+        shake: "shake 0.1s ease-in-out",
+        flicker: "flicker 0.5s ease-in-out infinite",
+      },
+      backgroundImage: {
+        "grunge-overlay": "url('/assets/textures/noise.svg')",
+        "brush-stroke": "url('/assets/textures/brush-stroke.svg')",
+      },
+      maskImage: {
+        s1: "url('/masks/s1.svg')",
+        s2: "url('/masks/s2.svg')",
+      },
+      maskSize: {
+        cover: "cover",
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    function ({ addUtilities }: { addUtilities: Function }) {
+      const newUtilities = {
+        ".mask-s1": {
+          "-webkit-mask-image": "url('/masks/s1.svg')",
+          "mask-image": "url('/masks/s1.svg')",
+          "-webkit-mask-size": "cover",
+          "mask-size": "cover",
+        },
+        ".mask-s2": {
+          "-webkit-mask-image": "url('/masks/s2.svg')",
+          "mask-image": "url('/masks/s2.svg')",
+          "-webkit-mask-size": "cover",
+          "mask-size": "cover",
+        },
+      };
+      addUtilities(newUtilities);
+    },
+  ],
 });
 export default config;

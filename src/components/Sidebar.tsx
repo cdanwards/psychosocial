@@ -7,6 +7,7 @@ import Link from "next/link";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { Separator } from "./ui/separator";
 import { LinkIcon, MapPinIcon } from "lucide-react";
+import { MaskedAvatar } from "./MaskedAvatar";
 
 async function Sidebar() {
   const authUser = await currentUser();
@@ -25,9 +26,11 @@ async function Sidebar() {
               href={`/profile/${user.username}`}
               className="flex flex-col items-center justify-center"
             >
-              <Avatar className="w-20 h-20 border-2 ">
-                <AvatarImage src={user.image || "/avatar.png"} />
-              </Avatar>
+              <MaskedAvatar
+                src={user.image || "/avatar.png"}
+                size={80}
+                className="w-20 h-20 border-2"
+              />
 
               <div className="mt-4 space-y-1">
                 <h3 className="font-semibold">{user.name}</h3>

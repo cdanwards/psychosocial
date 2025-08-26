@@ -59,8 +59,6 @@ function ProfilePageClient({
   const [editForm, setEditForm] = useState({
     name: user.name || "",
     bio: user.bio || "",
-    location: user.location || "",
-    website: user.website || "",
   });
 
   const handleEditSubmit = async () => {
@@ -94,7 +92,7 @@ function ProfilePageClient({
     currentUser?.username === user.username ||
     currentUser?.emailAddresses[0].emailAddress.split("@")[0] === user.username;
 
-  const formattedDate = format(new Date(user.createdAt), "MMMM yyyy");
+  // Note: createdAt field removed as it doesn't exist in User model
 
   return (
     <div className="max-w-3xl mx-auto">
@@ -166,36 +164,7 @@ function ProfilePageClient({
                   </Button>
                 )}
 
-                {/* LOCATION & WEBSITE */}
-                <div className="w-full mt-6 space-y-2 text-sm">
-                  {user.location && (
-                    <div className="flex items-center text-muted-foreground">
-                      <MapPinIcon className="size-4 mr-2" />
-                      {user.location}
-                    </div>
-                  )}
-                  {user.website && (
-                    <div className="flex items-center text-muted-foreground">
-                      <LinkIcon className="size-4 mr-2" />
-                      <a
-                        href={
-                          user.website.startsWith("http")
-                            ? user.website
-                            : `https://${user.website}`
-                        }
-                        className="hover:underline"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {user.website}
-                      </a>
-                    </div>
-                  )}
-                  <div className="flex items-center text-muted-foreground">
-                    <CalendarIcon className="size-4 mr-2" />
-                    Joined {formattedDate}
-                  </div>
-                </div>
+                {/* Note: Location, website, and join date removed as these fields don't exist in User model */}
               </div>
             </CardContent>
           </Card>
@@ -277,28 +246,6 @@ function ProfilePageClient({
                   }
                   className="min-h-[100px]"
                   placeholder="Tell us about yourself"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label>Location</Label>
-                <Input
-                  name="location"
-                  value={editForm.location}
-                  onChange={(e) =>
-                    setEditForm({ ...editForm, location: e.target.value })
-                  }
-                  placeholder="Where are you based?"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label>Website</Label>
-                <Input
-                  name="website"
-                  value={editForm.website}
-                  onChange={(e) =>
-                    setEditForm({ ...editForm, website: e.target.value })
-                  }
-                  placeholder="Your personal website"
                 />
               </div>
             </div>

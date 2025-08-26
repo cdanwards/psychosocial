@@ -1,7 +1,7 @@
 "use server";
 
 import { auth } from "@clerk/nextjs/server";
-import prisma from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { getDbUserId } from "./user.action";
 
@@ -15,9 +15,6 @@ export async function getProfileByUsername(username: string) {
         username: true,
         bio: true,
         image: true,
-        location: true,
-        website: true,
-        createdAt: true,
         _count: {
           select: {
             followers: true,
@@ -154,16 +151,12 @@ export async function updateProfile(formData: FormData) {
 
     const name = formData.get("name") as string;
     const bio = formData.get("bio") as string;
-    const location = formData.get("location") as string;
-    const website = formData.get("website") as string;
 
     const user = await prisma.user.update({
       where: { clerkId },
       data: {
         name,
         bio,
-        location,
-        website,
       },
     });
 
