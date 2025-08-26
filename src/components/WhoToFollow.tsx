@@ -7,8 +7,8 @@ import { MaskedAvatar } from "./MaskedAvatar";
 
 interface UserWithFollowers {
   id: string;
-  name: string;
-  username: string;
+  name: string | null;
+  username: string | null;
   image: string | null;
   _count: {
     followers: number;

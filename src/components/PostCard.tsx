@@ -214,7 +214,7 @@ function PostCard({ post, dbUserId }: { post: Post; dbUserId: string | null }) {
             <div className="space-y-4 pt-4 border-t">
               <div className="space-y-4">
                 {/* DISPLAY COMMENTS */}
-                {post.comments.map((comment: Comment) => (
+                {post.comments.map((comment) => (
                   <div key={comment.id} className="flex space-x-3">
                     <MaskedAvatar
                       src={comment.author.image ?? "/avatar.png"}

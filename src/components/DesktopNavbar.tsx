@@ -2,12 +2,14 @@ import { BellIcon, HomeIcon, UserIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { SignInButton, UserButton } from "@clerk/nextjs";
-import { currentUser } from "@clerk/nextjs/server";
 import { ModeToggle } from "./ui/mode-toggle";
+import { User } from "@clerk/nextjs/server";
 
-async function DesktopNavbar() {
-  const user = await currentUser();
+interface DesktopNavbarProps {
+  user: User | null;
+}
 
+function DesktopNavbar({ user }: DesktopNavbarProps) {
   return (
     <div className="hidden md:flex items-center space-x-4">
       <ModeToggle />
